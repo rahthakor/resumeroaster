@@ -1,31 +1,28 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, DM_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const barlow = Barlow_Condensed({
-  variable: "--font-barlow",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space",
   subsets: ["latin"],
-  weight: ["400", "700", "800", "900"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const dmMono = DM_Mono({
-  variable: "--font-dm-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "ResumeRoaster — Brutal Honesty for Your Resume",
+  title: "Resume Roaster — Brutal honesty for your CV",
   description: "Upload your resume. Get roasted. Actually improve.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${barlow.variable} ${dmMono.variable}`}>
-      <body className="min-h-full flex flex-col antialiased">{children}</body>
+    <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
