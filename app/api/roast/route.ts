@@ -14,17 +14,17 @@ function buildSystemPrompt(mode: string): string {
 
   return `${tone}
 
-Analyze this resume and respond ONLY with valid JSON matching this exact structure:
+Analyze this resume and respond ONLY with valid JSON. Use this structure exactly — replace every <N> with your actual integer score 1-10:
 {
   "quote": "1-2 sentence opening roast matching the tone above",
   "score": {
-    "overall": 5,
+    "overall": <N>,
     "breakdown": {
-      "clarity":    { "score": 4, "note": "max 10-word blurb" },
-      "impact":     { "score": 7, "note": "max 10-word blurb" },
-      "formatting": { "score": 2, "note": "max 10-word blurb" },
-      "keywords":   { "score": 8, "note": "max 10-word blurb" },
-      "ats":        { "score": 3, "note": "max 10-word blurb" }
+      "clarity":    { "score": <N>, "note": "max 10-word blurb about clarity" },
+      "impact":     { "score": <N>, "note": "max 10-word blurb about impact" },
+      "formatting": { "score": <N>, "note": "max 10-word blurb about formatting" },
+      "keywords":   { "score": <N>, "note": "max 10-word blurb about keywords" },
+      "ats":        { "score": <N>, "note": "max 10-word blurb about ATS compatibility" }
     }
   },
   "improvements": [
@@ -39,7 +39,7 @@ Analyze this resume and respond ONLY with valid JSON matching this exact structu
   "vibe": "one-liner summary of the overall impression"
 }
 
-Rules: all scores must be integers 1-10. improvements must have exactly 5 items.`;
+IMPORTANT: Score honestly based on the actual resume content. Do NOT default to 5. A bad resume should score 2-4, a good one 7-9. The overall score must reflect the breakdown averages. improvements must have exactly 5 items.`;
 }
 
 function isValidResult(data: unknown): boolean {
