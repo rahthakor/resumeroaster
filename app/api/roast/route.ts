@@ -63,16 +63,24 @@ export async function POST(req: Request) {
   let messages: OpenAI.Chat.ChatCompletionMessageParam[];
 
   if (file.type === "application/pdf") {
-    const pdfParse = (await import("pdf-parse")).default;
     const buffer = Buffer.from(await file.arrayBuffer());
-    const parsed = await pdfParse(buffer);
-    const text = parsed.text.trim();
-    if (!text) {
-      return NextResponse.json({ error: "Could not extract text from PDF. Is it a scanned image?" }, { status: 400 });
+
+    const { default: PDFParser } = await import("pdf2json");
+    const text = await new Promise<string>((resolve, reject) => {
+      const parser = new PDFParser(null, 1);
+      parser.on("pdfParser_dataReady", () => {
+        resolve((parser as any).getRawTextContent() as string);
+      });
+      parser.on("pdfParser_dataError", (err: unknown) => reject(err));
+      parser.parseBuffer(buffer);
+    });
+
+    if (!text.trim()) {
+      return NextResponse.json({ error: "Could not extract text from PDF. Try uploading an image instead." }, { status: 400 });
     }
     messages = [
       { role: "system", content: SYSTEM_PROMPT },
-      { role: "user", content: text },
+      { role: "user", content: text.trim() },
     ];
   } else {
     // JPG / PNG — send directly to OpenAI vision
