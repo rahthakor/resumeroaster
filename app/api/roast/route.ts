@@ -83,7 +83,7 @@ export async function POST(req: Request) {
   if (file.type === "application/pdf") {
     const { default: PDFParser } = await import("pdf2json");
     const text = await new Promise<string>((resolve, reject) => {
-      const parser = new PDFParser(null, 1);
+      const parser = new PDFParser(null, true);
       parser.on("pdfParser_dataReady", () => {
         resolve((parser as any).getRawTextContent() as string);
       });
